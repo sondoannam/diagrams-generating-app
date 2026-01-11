@@ -1,0 +1,90 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// Users is synchronized with Clerk
+model User {
+  id        String  @id @default(cuid())
+  clerkId   String  @unique
+  email     String  @unique
+  fullName  String?
+  avatarUrl String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  diagrams Diagram[]
+
+  @@map("users")
+}
+
+// Diagrams
+model Diagram {
+  id    String @id @default(cuid())
+  title String @default("Untitled Diagram")
+
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  // --- CORE DATA FOR EDITOR ---
+  // Structure: { nodes: [...], edges: [...], viewport: {...} }
+  content Json @default("{}") @db.JsonB
+
+  // Thumbnail
+  thumbnail String?
+
+  // --- CHAT CONTEXT ---
+  messages Message[]
+
+  type DiagramType @default(USE_CASE)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt // Field này sẽ update liên tục khi Auto-save
+
+  @@index([userId])
+  @@map("diagrams")
+}
+
+model Message {
+  id String @id @default(cuid())
+
+  diagramId String
+  diagram   Diagram @relation(fields: [diagramId], references: [id], onDelete: Cascade)
+
+  role    MessageRole
+  content String      @db.Text
+
+  status GenerationStatus @default(COMPLETED)
+
+  createdAt DateTime @default(now())
+
+  @@index([diagramId])
+  @@map("messages")
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+// --- ENUMS ---
+
+enum DiagramType {
+  USE_CASE
+  SEQUENCE
+  CLASS
+  ACTIVITY
+  ERD
+  // ...
+}
+
+enum GenerationStatus {
+  PENDING
+  COMPLETED
+  FAILED
+}
