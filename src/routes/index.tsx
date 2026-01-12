@@ -1,118 +1,191 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {
-  Zap,
-  Server,
-  Route as RouteIcon,
-  Shield,
-  Waves,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  SignUpButton,
+} from '@clerk/clerk-react'
+import {
+  ArrowRight,
+  GitBranch,
   Sparkles,
+  Users,
+  Workflow,
+  Zap,
 } from 'lucide-react'
 
-export const Route = createFileRoute('/')({ component: App })
+import { Button } from '@/components/ui/button'
 
-function App() {
-  const features = [
-    {
-      icon: <Zap className="w-12 h-12 text-cyan-400" />,
-      title: 'Powerful Server Functions',
-      description:
-        'Write server-side code that seamlessly integrates with your client components. Type-safe, secure, and simple.',
-    },
-    {
-      icon: <Server className="w-12 h-12 text-cyan-400" />,
-      title: 'Flexible Server Side Rendering',
-      description:
-        'Full-document SSR, streaming, and progressive enhancement out of the box. Control exactly what renders where.',
-    },
-    {
-      icon: <RouteIcon className="w-12 h-12 text-cyan-400" />,
-      title: 'API Routes',
-      description:
-        'Build type-safe API endpoints alongside your application. No separate backend needed.',
-    },
-    {
-      icon: <Shield className="w-12 h-12 text-cyan-400" />,
-      title: 'Strongly Typed Everything',
-      description:
-        'End-to-end type safety from server to client. Catch errors before they reach production.',
-    },
-    {
-      icon: <Waves className="w-12 h-12 text-cyan-400" />,
-      title: 'Full Streaming Support',
-      description:
-        'Stream data from server to client progressively. Perfect for AI applications and real-time updates.',
-    },
-    {
-      icon: <Sparkles className="w-12 h-12 text-cyan-400" />,
-      title: 'Next Generation Ready',
-      description:
-        'Built from the ground up for modern web applications. Deploy anywhere JavaScript runs.',
-    },
-  ]
+export const Route = createFileRoute('/')({
+  component: LandingPage,
+})
 
+function LandingPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
-      <section className="relative py-20 px-6 text-center overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-blue-500/10 to-purple-500/10"></div>
-        <div className="relative max-w-5xl mx-auto">
-          <div className="flex items-center justify-center gap-6 mb-6">
-            <img
-              src="/tanstack-circle-logo.png"
-              alt="TanStack Logo"
-              className="w-24 h-24 md:w-32 md:h-32"
-            />
-            <h1 className="text-6xl md:text-7xl font-black text-white [letter-spacing:-0.08em]">
-              <span className="text-gray-300">TANSTACK</span>{' '}
-              <span className="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-transparent">
-                START
-              </span>
-            </h1>
+    <div className="min-h-screen flex flex-col">
+      {/* Header */}
+      <header className="flex items-center justify-between px-6 py-4 border-b border-border/50">
+        <div className="flex items-center gap-2">
+          <div className="h-9 w-9 rounded-lg gradient-primary flex items-center justify-center">
+            <span className="text-white font-bold">D</span>
           </div>
-          <p className="text-2xl md:text-3xl text-gray-300 mb-4 font-light">
-            The framework for next generation AI applications
-          </p>
-          <p className="text-lg text-gray-400 max-w-3xl mx-auto mb-8">
-            Full-stack framework powered by TanStack Router for React and Solid.
-            Build modern applications with server functions, streaming, and type
-            safety.
-          </p>
-          <div className="flex flex-col items-center gap-4">
-            <a
-              href="https://tanstack.com/start"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-8 py-3 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-lg transition-colors shadow-lg shadow-cyan-500/50"
-            >
-              Documentation
-            </a>
-            <p className="text-gray-400 text-sm mt-2">
-              Begin your TanStack Start journey by editing{' '}
-              <code className="px-2 py-1 bg-slate-700 rounded text-cyan-400">
-                /src/routes/index.tsx
-              </code>
-            </p>
-          </div>
+          <span className="font-semibold text-xl">DiagramAI</span>
         </div>
-      </section>
-
-      <section className="py-16 px-6 max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {features.map((feature, index) => (
-            <div
-              key={index}
-              className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-xl p-6 hover:border-cyan-500/50 transition-all duration-300 hover:shadow-lg hover:shadow-cyan-500/10"
+        <div className="flex items-center gap-3">
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button variant="ghost" size="sm">
+                Sign In
+              </Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button
+                size="sm"
+                className="gradient-primary text-white hover:opacity-90"
+              >
+                Get Started
+              </Button>
+            </SignUpButton>
+          </SignedOut>
+          <SignedIn>
+            <Button
+              size="sm"
+              className="gradient-primary text-white hover:opacity-90"
+              asChild
             >
-              <div className="mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-white mb-3">
-                {feature.title}
-              </h3>
-              <p className="text-gray-400 leading-relaxed">
-                {feature.description}
+              <a href="/app">
+                Open App <ArrowRight className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
+          </SignedIn>
+        </div>
+      </header>
+
+      {/* Hero Section */}
+      <main className="flex-1 flex flex-col items-center justify-center px-6 py-16">
+        <div className="max-w-4xl text-center space-y-8">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-sm">
+            <Sparkles className="h-4 w-4 text-primary" />
+            <span>AI-Powered Diagram Generation</span>
+          </div>
+
+          {/* Headline */}
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-tight">
+            Create System Diagrams{' '}
+            <span className="text-gradient">with AI</span>
+          </h1>
+
+          {/* Subheadline */}
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            Describe your requirements in natural language. Let AI understand,
+            design, and generate professional UML diagrams in seconds.
+          </p>
+
+          {/* CTA Buttons */}
+          <div className="flex items-center justify-center gap-4 pt-4">
+            <SignedOut>
+              <SignUpButton mode="modal">
+                <Button
+                  size="lg"
+                  className="gradient-primary text-white hover:opacity-90 px-8"
+                >
+                  Start Creating <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <Button
+                size="lg"
+                className="gradient-primary text-white hover:opacity-90 px-8"
+                asChild
+              >
+                <a href="/app">
+                  Open App <ArrowRight className="ml-2 h-5 w-5" />
+                </a>
+              </Button>
+            </SignedIn>
+          </div>
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-16">
+            <div className="glass-card p-6 text-left space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center">
+                <Users className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="font-semibold">Use Case Diagrams</h3>
+              <p className="text-sm text-muted-foreground">
+                Model actors, systems, and their interactions clearly
               </p>
             </div>
-          ))}
+            <div className="glass-card p-6 text-left space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-indigo-500 to-blue-600 flex items-center justify-center">
+                <Workflow className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="font-semibold">Activity Diagrams</h3>
+              <p className="text-sm text-muted-foreground">
+                Visualize workflows and business process flows
+              </p>
+            </div>
+            <div className="glass-card p-6 text-left space-y-3">
+              <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-600 flex items-center justify-center">
+                <GitBranch className="h-5 w-5 text-white" />
+              </div>
+              <h3 className="font-semibold">Sequence Diagrams</h3>
+              <p className="text-sm text-muted-foreground">
+                Show object interactions and message flows
+              </p>
+            </div>
+          </div>
+
+          {/* How it works */}
+          <div className="pt-16 space-y-8">
+            <h2 className="text-2xl font-semibold">How it works</h2>
+            <div className="flex flex-col md:flex-row items-center justify-center gap-8 text-left">
+              <div className="flex items-start gap-4 max-w-xs">
+                <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center shrink-0">
+                  <span className="text-white font-semibold text-sm">1</span>
+                </div>
+                <div>
+                  <h4 className="font-medium">Describe</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Tell AI what system you want to model
+                  </p>
+                </div>
+              </div>
+              <Zap className="h-5 w-5 text-primary hidden md:block" />
+              <div className="flex items-start gap-4 max-w-xs">
+                <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center shrink-0">
+                  <span className="text-white font-semibold text-sm">2</span>
+                </div>
+                <div>
+                  <h4 className="font-medium">Review</h4>
+                  <p className="text-sm text-muted-foreground">
+                    AI explains its understanding, you confirm
+                  </p>
+                </div>
+              </div>
+              <Zap className="h-5 w-5 text-primary hidden md:block" />
+              <div className="flex items-start gap-4 max-w-xs">
+                <div className="w-8 h-8 rounded-full gradient-primary flex items-center justify-center shrink-0">
+                  <span className="text-white font-semibold text-sm">3</span>
+                </div>
+                <div>
+                  <h4 className="font-medium">Generate</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Get an editable, exportable diagram
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </section>
+      </main>
+
+      {/* Footer */}
+      <footer className="px-6 py-6 border-t border-border/50 text-center text-sm text-muted-foreground">
+        © 2026 DiagramAI. Built with AI for developers.
+      </footer>
     </div>
   )
 }

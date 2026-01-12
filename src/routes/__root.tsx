@@ -2,11 +2,10 @@ import {
   HeadContent,
   Scripts,
   createRootRouteWithContext,
+  Outlet,
 } from '@tanstack/react-router'
 import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
 import { TanStackDevtools } from '@tanstack/react-devtools'
-
-import Header from '../components/Header'
 
 import ClerkProvider from '../integrations/clerk/provider'
 
@@ -31,7 +30,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'DiagramAI - AI-Powered System Diagram Generator',
+      },
+      {
+        name: 'description',
+        content:
+          'Create professional UML diagrams with AI. Generate use case, activity, and sequence diagrams from natural language descriptions.',
       },
     ],
     links: [
@@ -42,19 +46,18 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     ],
   }),
 
-  shellComponent: RootDocument,
+  component: RootComponent,
 })
 
-function RootDocument({ children }: { children: React.ReactNode }) {
+function RootComponent() {
   return (
-    <html lang="en">
+    <html lang="en" className="dark">
       <head>
         <HeadContent />
       </head>
       <body>
         <ClerkProvider>
-          <Header />
-          {children}
+          <Outlet />
           <TanStackDevtools
             config={{
               position: 'bottom-right',
