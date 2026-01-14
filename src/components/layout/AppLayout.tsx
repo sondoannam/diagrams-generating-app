@@ -1,5 +1,5 @@
 import { Link, Outlet } from '@tanstack/react-router'
-import { UserButton } from '@clerk/clerk-react'
+import { UserButton, useUser } from '@clerk/clerk-react'
 import { Plus, MessageSquare, PanelLeftClose, PanelLeft } from 'lucide-react'
 import { useState } from 'react'
 
@@ -22,6 +22,8 @@ const placeholderConversations = [
 
 export default function AppLayout() {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+
+  const { user } = useUser()
 
   return (
     <TooltipProvider>
@@ -114,9 +116,7 @@ export default function AppLayout() {
           <Separator className="bg-sidebar-border" />
 
           {/* User Profile */}
-          <div
-            className={`p-4 ${sidebarCollapsed ? 'flex justify-center' : ''}`}
-          >
+          <div className="p-4 flex items-center gap-2">
             <UserButton
               appearance={{
                 elements: {
@@ -124,6 +124,9 @@ export default function AppLayout() {
                 },
               }}
             />
+            {!sidebarCollapsed && (
+              <span className="ml-2">{user?.fullName}</span>
+            )}
           </div>
         </aside>
 

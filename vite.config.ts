@@ -20,6 +20,9 @@ const config = defineConfig({
     }),
     viteReact(),
   ],
+  server: {
+    allowedHosts: true,
+  },
 })
 
 export default config
