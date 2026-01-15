@@ -38,7 +38,6 @@ export type DependencyEdge = Edge<DependencyEdgeData, 'dependency'>
 
 export const AssociationEdge = memo(
   ({
-    id,
     sourceX,
     sourceY,
     targetX,
@@ -46,7 +45,7 @@ export const AssociationEdge = memo(
     sourcePosition,
     targetPosition,
     style = {},
-    markerEnd,
+    markerStart,
     data,
     selected,
   }: EdgeProps<AssociationEdge>) => {
@@ -63,7 +62,7 @@ export const AssociationEdge = memo(
       <>
         <BaseEdge
           path={edgePath}
-          markerEnd={markerEnd}
+          markerStart={markerStart}
           style={{
             ...style,
             stroke: selected ? '#667eea' : '#a0a0b0',
@@ -97,7 +96,6 @@ AssociationEdge.displayName = 'AssociationEdge'
 
 export const DependencyEdge = memo(
   ({
-    id,
     sourceX,
     sourceY,
     targetX,
@@ -105,7 +103,7 @@ export const DependencyEdge = memo(
     sourcePosition,
     targetPosition,
     style = {},
-    markerEnd,
+    markerStart,
     data,
     selected,
   }: EdgeProps<DependencyEdge>) => {
@@ -125,7 +123,7 @@ export const DependencyEdge = memo(
       <>
         <BaseEdge
           path={edgePath}
-          markerEnd={markerEnd}
+          markerStart={markerStart}
           style={{
             ...style,
             stroke: selected ? '#667eea' : '#6b7280',

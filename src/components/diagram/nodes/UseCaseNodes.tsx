@@ -104,15 +104,29 @@ export const ActorNode = memo(({ data, selected }: NodeProps<ActorNode>) => {
         {data.label}
       </div>
 
-      {/* Connection handles */}
+      {/* Connection handles - both source and target at each position for bidirectional connections */}
       <Handle
         type="source"
         position={Position.Right}
+        id="right-source"
+        className="w-3! h-3! bg-primary! border-2! border-background!"
+      />
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="right-target"
+        className="w-3! h-3! bg-primary! border-2! border-background!"
+      />
+      <Handle
+        type="source"
+        position={Position.Left}
+        id="left-source"
         className="w-3! h-3! bg-primary! border-2! border-background!"
       />
       <Handle
         type="target"
         position={Position.Left}
+        id="left-target"
         className="w-3! h-3! bg-primary! border-2! border-background!"
       />
     </div>
@@ -144,27 +158,53 @@ export const UseCaseNode = memo(
           {data.label}
         </span>
 
-        {/* Connection handles */}
+        {/* Connection handles - both source and target at each position for bidirectional connections */}
+        <Handle
+          type="source"
+          position={Position.Left}
+          id="left-source"
+          className="w-3! h-3! bg-primary! border-2! border-background!"
+        />
         <Handle
           type="target"
           position={Position.Left}
+          id="left-target"
           className="w-3! h-3! bg-primary! border-2! border-background!"
         />
         <Handle
           type="source"
           position={Position.Right}
+          id="right-source"
+          className="w-3! h-3! bg-primary! border-2! border-background!"
+        />
+        <Handle
+          type="target"
+          position={Position.Right}
+          id="right-target"
+          className="w-3! h-3! bg-primary! border-2! border-background!"
+        />
+        <Handle
+          type="source"
+          position={Position.Top}
+          id="top-source"
           className="w-3! h-3! bg-primary! border-2! border-background!"
         />
         <Handle
           type="target"
           position={Position.Top}
-          id="top"
+          id="top-target"
           className="w-3! h-3! bg-primary! border-2! border-background!"
         />
         <Handle
           type="source"
           position={Position.Bottom}
-          id="bottom"
+          id="bottom-source"
+          className="w-3! h-3! bg-primary! border-2! border-background!"
+        />
+        <Handle
+          type="target"
+          position={Position.Bottom}
+          id="bottom-target"
           className="w-3! h-3! bg-primary! border-2! border-background!"
         />
       </div>
@@ -196,15 +236,29 @@ export const SystemNode = memo(({ data, selected }: NodeProps<SystemNode>) => {
         {data.label}
       </span>
 
-      {/* Connection handles */}
+      {/* Connection handles - both source and target at each position for bidirectional connections */}
+      <Handle
+        type="source"
+        position={Position.Left}
+        id="left-source"
+        className="w-3! h-3! bg-muted-foreground! border-2! border-background!"
+      />
       <Handle
         type="target"
         position={Position.Left}
+        id="left-target"
         className="w-3! h-3! bg-muted-foreground! border-2! border-background!"
       />
       <Handle
         type="source"
         position={Position.Right}
+        id="right-source"
+        className="w-3! h-3! bg-muted-foreground! border-2! border-background!"
+      />
+      <Handle
+        type="target"
+        position={Position.Right}
+        id="right-target"
         className="w-3! h-3! bg-muted-foreground! border-2! border-background!"
       />
     </div>

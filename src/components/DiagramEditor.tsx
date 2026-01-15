@@ -100,7 +100,7 @@ function DiagramEditorInternal({
         ...params,
         id: `edge_${Date.now()}`,
         type: selectedEdgeType,
-        markerEnd: {
+        markerStart: {
           type: MarkerType.ArrowClosed,
           width: 20,
           height: 20,
