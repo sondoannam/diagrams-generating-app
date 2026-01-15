@@ -84,7 +84,7 @@ function DiagramEditorInternal({
   isClient,
 }: DiagramEditorInternalProps) {
   const reactFlowWrapper = useRef<HTMLDivElement>(null)
-  const { screenToFlowPosition } = useReactFlow()
+  const { screenToFlowPosition, getViewport } = useReactFlow()
 
   // React Flow state management
   const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes)
@@ -172,6 +172,30 @@ function DiagramEditorInternal({
     setEdges((eds) => eds.filter((e) => !e.selected))
   }, [setNodes, setEdges])
 
+  // Add shape from sidebar (double-click)
+  const handleShapeAdd = useCallback(
+    (type: string, data: Record<string, unknown>) => {
+      // Get viewport center position
+      const { x, y, zoom } = getViewport()
+      const centerX = (window.innerWidth / 2 - x) / zoom
+      const centerY = (window.innerHeight / 2 - y) / zoom
+
+      // Add some randomness to avoid stacking
+      const offsetX = (Math.random() - 0.5) * 100
+      const offsetY = (Math.random() - 0.5) * 100
+
+      const newNode: Node = {
+        id: generateNodeId(),
+        type,
+        position: { x: centerX + offsetX, y: centerY + offsetY },
+        data: { label: type.charAt(0).toUpperCase() + type.slice(1), ...data },
+      }
+
+      setNodes((nds) => [...nds, newNode])
+    },
+    [getViewport, setNodes],
+  )
+
   // Notify parent of changes
   useEffect(() => {
     if (onChange) {
@@ -195,6 +219,7 @@ function DiagramEditorInternal({
         <ShapesSidebar
           selectedEdgeType={selectedEdgeType}
           onEdgeTypeChange={setSelectedEdgeType}
+          onShapeAdd={handleShapeAdd}
         />
       )}
 

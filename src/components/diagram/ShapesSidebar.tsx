@@ -74,20 +74,22 @@ export const useCaseConnections: ShapeDefinition[] = [
 interface ShapeItemProps {
   shape: ShapeDefinition
   onDragStart: (event: DragEvent, shape: ShapeDefinition) => void
+  onDoubleClick: (shape: ShapeDefinition) => void
 }
 
-function ShapeItem({ shape, onDragStart }: ShapeItemProps) {
+function ShapeItem({ shape, onDragStart, onDoubleClick }: ShapeItemProps) {
   return (
     <div
       draggable={shape.category === 'nodes'}
       onDragStart={(e) => onDragStart(e, shape)}
+      onDoubleClick={() => shape.category === 'nodes' && onDoubleClick(shape)}
       className={`
         flex items-center gap-3 p-3 rounded-lg border border-border/50
         transition-all cursor-grab active:cursor-grabbing
         hover:bg-accent hover:border-accent-foreground/20
         ${shape.category === 'nodes' ? 'hover:shadow-lg hover:scale-[1.02]' : 'opacity-60 cursor-not-allowed'}
       `}
-      title={shape.description}
+      title={`${shape.description}${shape.category === 'nodes' ? ' (double-click to add)' : ''}`}
     >
       <div className="p-2 rounded-md bg-muted text-muted-foreground">
         {shape.icon}
@@ -158,11 +160,13 @@ function EdgeTypeSelector({
 interface ShapesSidebarProps {
   selectedEdgeType: string
   onEdgeTypeChange: (type: string) => void
+  onShapeAdd: (type: string, data: Record<string, unknown>) => void
 }
 
 export default function ShapesSidebar({
   selectedEdgeType,
   onEdgeTypeChange,
+  onShapeAdd,
 }: ShapesSidebarProps) {
   // Handle drag start - set data for React Flow to read on drop
   const handleDragStart = (event: DragEvent, shape: ShapeDefinition) => {
@@ -183,7 +187,7 @@ export default function ShapesSidebar({
       <div className="p-4 border-b border-border">
         <h2 className="text-sm font-semibold text-foreground">Shapes</h2>
         <p className="text-xs text-muted-foreground mt-1">
-          Drag shapes to canvas
+          Drag or double-click to add
         </p>
       </div>
 
@@ -200,6 +204,7 @@ export default function ShapesSidebar({
                   key={shape.type}
                   shape={shape}
                   onDragStart={handleDragStart}
+                  onDoubleClick={(s) => onShapeAdd(s.type, s.defaultData || {})}
                 />
               ))}
             </div>
